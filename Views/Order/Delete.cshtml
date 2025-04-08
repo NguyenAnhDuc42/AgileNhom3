@@ -1,0 +1,25 @@
+﻿@model Agile3.Models.Order
+@{
+    ViewData["Title"] = "Xóa hóa đơn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-danger">Xóa hóa đơn</h2>
+<h4>Bạn có chắc chắn muốn xóa hóa đơn này?</h4>
+<hr />
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">Khách hàng</dt>
+        <dd class="col-sm-10">@Model.CustomerName</dd>
+        <dt class="col-sm-2">Số điện thoại</dt>
+        <dd class="col-sm-10">@Model.PhoneNumber</dd>
+        <dt class="col-sm-2">Tổng tiền</dt>
+        <dd class="col-sm-10">@Model.TotalAmount.ToString("N0") đ</dd>
+    </dl>
+</div>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Xóa</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>

@@ -1,0 +1,9 @@
+﻿@model Agile3.Models.User
+
+<h2>Your Profile</h2>
+<ul class="list-group">
+    <li class="list-group-item"><strong>Username:</strong> @Model.UserName</li>
+    <li class="list-group-item"><strong>Email:</strong> @Model.Email</li>
+    <li class="list-group-item"><strong>Phone:</strong> @Model.PhoneNumber</li>
+</ul>
+<a class="btn btn-primary mt-3" asp-action="EditProfile">Edit Profile</a>

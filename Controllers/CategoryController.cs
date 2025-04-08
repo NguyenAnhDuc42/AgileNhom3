@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Agile3.Data;
 using Agile3.Models;
@@ -18,6 +18,7 @@ namespace Agile3.Controllers
         public async Task<IActionResult> Index()
         {
             var categories = await _context.Categories.Include(c => c.Products).ToListAsync();
+            Console.WriteLine($"Có {categories.Count} danh mục");
             return View(categories);
         }
 

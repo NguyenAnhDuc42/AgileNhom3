@@ -1,3 +1,4 @@
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Agile3.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,10 @@ namespace Agile3
             })
            .AddEntityFrameworkStores<Data.dataContext>()
            .AddDefaultTokenProviders();
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = "/Auth/AccessDenied";
+            });
 
             var app = builder.Build();
 
@@ -33,21 +38,21 @@ namespace Agile3
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles(); // ✅ Dòng này dùng để phục vụ static files như CSS, JS, ảnh
+
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.MapStaticAssets();
+            // ❌ Đã xóa: app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Auth}/{action=Login}/{id?}")
-                .WithStaticAssets();
+                pattern: "{controller=Auth}/{action=Login}/{id?}"); // ❌ Đã xóa .WithStaticAssets()
 
             app.Run();
         }

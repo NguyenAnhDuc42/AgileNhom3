@@ -1,0 +1,21 @@
+﻿@model Agile3.Models.Order
+@{
+    ViewData["Title"] = "Chỉnh sửa thông tin khách";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center">Chỉnh sửa thông tin khách hàng</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label class="form-label">Tên khách hàng</label>
+        <input asp-for="CustomerName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Số điện thoại</label>
+        <input asp-for="PhoneNumber" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>

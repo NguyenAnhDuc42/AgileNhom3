@@ -44,5 +44,16 @@
                 </tr>
             </tfoot>
         </table>
+        @if (Model.Any())
+        {
+            <form asp-action="Checkout" method="post" class="mt-4">
+                <div class="form-group">
+                    <label for="amountPaid"><strong>Tiền khách đưa:</strong></label>
+                    <input type="number" name="amountPaid" class="form-control" required min="0" step="1000" />
+                </div>
+                <button type="submit" class="btn btn-success mt-2">Thanh toán</button>
+            </form>
+        }
+
     }
 </div>

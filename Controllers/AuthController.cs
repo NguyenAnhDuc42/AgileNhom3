@@ -1,3 +1,5 @@
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Agile3.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -67,6 +69,11 @@ namespace Agile3.Controllers
             }
             return View(model);
         }
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
 
         [HttpPost]
         public async Task<ActionResult> Logout()
@@ -74,6 +81,46 @@ namespace Agile3.Controllers
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+        [HttpGet]
+        public async Task<IActionResult> EditProfile()
+        {
+            var user = await userManager.GetUserAsync(User);
+            if (user == null) return RedirectToAction("Login");
+
+            return View(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(User updatedUser)
+        {
+            var user = await userManager.GetUserAsync(User);
+            if (user == null) return NotFound();
+
+            user.UserName = updatedUser.UserName;
+            user.PhoneNumber = updatedUser.PhoneNumber;
+
+            var result = await userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                // ✅ Đăng nhập lại để cập nhật User.Identity
+                await signInManager.SignInAsync(user, isPersistent: false);
+                return RedirectToAction("Profile");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+
+            return View(updatedUser);
+        }
+
+        public async Task<IActionResult> Profile()
+        {
+            var user = await userManager.GetUserAsync(User);
+            return View(user);
+        }
+
 
     }
 }
