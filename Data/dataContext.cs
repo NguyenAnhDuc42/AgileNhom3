@@ -25,9 +25,9 @@ public class dataContext : IdentityDbContext<User, IdentityRole, string>
             .WithMany(u => u.CartItems)
             .HasForeignKey(c => c.UserId);
         modelBuilder.Entity<Category>()
-        .HasMany(c => c.Products)
-        .WithOne(p => p.Category)
-        .HasForeignKey(p => p.CategoryId);
+            .HasMany(c => c.Products)
+            .WithOne(p => p.Category)
+            .HasForeignKey(p => p.CategoryId);
 
     }
 }
