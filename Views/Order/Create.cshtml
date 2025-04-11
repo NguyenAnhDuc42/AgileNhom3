@@ -1,0 +1,28 @@
+﻿@model Agile3.Models.Order
+@{
+    ViewData["Title"] = "Tạo hóa đơn mới";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center">Tạo hóa đơn mới</h2>
+
+<form asp-action="Create">
+    <div class="mb-3">
+        <label class="form-label">Tên khách hàng</label>
+        <input asp-for="CustomerName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Số điện thoại</label>
+        <input asp-for="PhoneNumber" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Tổng tiền</label>
+        <input asp-for="TotalAmount" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Tiền khách đưa</label>
+        <input asp-for="AmountPaid" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-success">Lưu hóa đơn</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>

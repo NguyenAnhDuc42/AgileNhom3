@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 namespace Agile3.Models
 {
     public class ErrorViewModel

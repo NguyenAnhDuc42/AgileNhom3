@@ -1,3 +1,5 @@
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Agile3.Models;
@@ -34,5 +36,20 @@ namespace Agile3.Controllers
             await _userManager.AddToRoleAsync(user, "Admin");
             return RedirectToAction("Index", "Home");
         }
+        public async Task<IActionResult> MakeMeAdmin()
+        {
+            var user = await _userManager.GetUserAsync(User); // ✅ Lấy user đang đăng nhập
+            if (user != null)
+            {
+                var isInRole = await _userManager.IsInRoleAsync(user, "Admin");
+                if (!isInRole)
+                {
+                    await _userManager.AddToRoleAsync(user, "Admin");
+                }
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 }

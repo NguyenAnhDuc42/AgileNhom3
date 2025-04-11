@@ -1,0 +1,42 @@
+﻿@model Agile3.Models.Order
+@{
+    ViewData["Title"] = "Chi tiết hóa đơn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center">Chi tiết hóa đơn</h2>
+
+<div class="mb-3">
+    <strong>Khách hàng:</strong> @Model.CustomerName<br />
+    <strong>SĐT:</strong> @Model.PhoneNumber<br />
+    <strong>Ngày tạo:</strong> @Model.OrderDate.ToString("dd/MM/yyyy HH:mm")<br />
+    <strong>Tổng tiền:</strong> @Model.TotalAmount.ToString("N0") đ<br />
+    <strong>Tiền khách đưa:</strong> @Model.AmountPaid.ToString("N0") đ<br />
+    <strong>Tiền thừa:</strong> @Model.ChangeGiven.ToString("N0") đ
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Tên sản phẩm</th>
+            <th>Số lượng</th>
+            <th>Đơn giá</th>
+            <th>Thành tiền</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.ProductName</td>
+                <td>@item.Quantity</td>
+                <td>@item.Price.ToString("N0")</td>
+                <td>@item.Total.ToString("N0")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</p>

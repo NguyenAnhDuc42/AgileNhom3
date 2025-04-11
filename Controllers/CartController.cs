@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -74,5 +75,52 @@ namespace Agile3.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        [HttpPost]
+        public async Task<IActionResult> Checkout(decimal amountPaid)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return RedirectToAction("Login", "Auth");
+
+            var cartItems = await _context.CartItems
+                .Where(c => c.UserId == user.Id)
+                .ToListAsync();
+
+            if (!cartItems.Any()) return RedirectToAction(nameof(Index));
+
+            decimal total = cartItems.Sum(c => c.Total);
+
+            var order = new Order
+            {
+                UserId = user.Id,
+                CustomerName = user.UserName ?? "Khách",
+                PhoneNumber = user.PhoneNumber ?? "",
+                TotalAmount = total,
+                AmountPaid = amountPaid,
+                ChangeGiven = amountPaid - total,
+                OrderDate = DateTime.Now
+            };
+
+            _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
+
+            foreach (var item in cartItems)
+            {
+                var orderItem = new OrderItem
+                {
+                    OrderId = order.Id,
+                    ProductId = item.ProductId,
+                    ProductName = item.ProductName,
+                    Quantity = item.Quantity,
+                    Price = item.Total / item.Quantity
+                };
+                _context.OrderItems.Add(orderItem);
+            }
+
+            _context.CartItems.RemoveRange(cartItems);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", "Order", new { id = order.Id });
+        }
+
     }
 }
